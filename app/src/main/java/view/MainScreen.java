@@ -129,6 +129,11 @@ public class MainScreen extends javax.swing.JFrame {
         JLabelProjects.setText("Projetos");
 
         JLabelProjectsAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tab.png"))); // NOI18N
+        JLabelProjectsAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JLabelProjectsAddMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelProjectsLayout = new javax.swing.GroupLayout(jPanelProjects);
         jPanelProjects.setLayout(jPanelProjectsLayout);
@@ -323,6 +328,13 @@ public class MainScreen extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void JLabelProjectsAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JLabelProjectsAddMouseClicked
+        // ao clicar no botão de 'projeto +' vai abrir a tela de cadastrar projeto
+        
+        ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
+        projectDialogScreen.setVisible(true);
+    }//GEN-LAST:event_JLabelProjectsAddMouseClicked
 
     /**
      * @param args the command line arguments
