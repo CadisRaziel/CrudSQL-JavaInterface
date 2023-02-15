@@ -202,6 +202,11 @@ public class MainScreen extends javax.swing.JFrame {
         JLabelTaskAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/tab.png"))); // NOI18N
         JLabelTaskAdd.setMaximumSize(new java.awt.Dimension(26, 26));
         JLabelTaskAdd.setMinimumSize(new java.awt.Dimension(26, 26));
+        JLabelTaskAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JLabelTaskAddMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout JPanelTasksLayout = new javax.swing.GroupLayout(JPanelTasks);
         JPanelTasks.setLayout(JPanelTasksLayout);
@@ -335,6 +340,15 @@ public class MainScreen extends javax.swing.JFrame {
         ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
         projectDialogScreen.setVisible(true);
     }//GEN-LAST:event_JLabelProjectsAddMouseClicked
+
+    private void JLabelTaskAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JLabelTaskAddMouseClicked
+        // TODO add your handling code here:
+        TaskDialogScreen taskDialogScreen = new TaskDialogScreen(this, rootPaneCheckingEnabled);
+        
+        //para mostrar a tarefa ao usuario (aqui eu seto o projeto ao qual essa tarefa que eu vou criar pertence
+        //taskDialogScreen.setProject(project);    
+        taskDialogScreen.setVisible(true);
+    }//GEN-LAST:event_JLabelTaskAddMouseClicked
 
     /**
      * @param args the command line arguments
