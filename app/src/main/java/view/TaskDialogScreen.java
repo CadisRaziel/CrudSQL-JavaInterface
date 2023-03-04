@@ -2,8 +2,11 @@ package view;
 
 import controller.TaskController;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import model.Project;
 import model.Task;
@@ -42,7 +45,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         JScrollPanelNote = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         JScrollPanelDescription = new javax.swing.JTextArea();
-        jFormattedTextFieldDeadLine = new javax.swing.JFormattedTextField();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -128,12 +131,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         JScrollPanelDescription.setToolTipText("Digite uma descrição");
         jScrollPane3.setViewportView(JScrollPanelDescription);
 
-        jFormattedTextFieldDeadLine.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
-        jFormattedTextFieldDeadLine.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFormattedTextFieldDeadLineActionPerformed(evt);
-            }
-        });
+        jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
 
         javax.swing.GroupLayout JPanelTaskLayout = new javax.swing.GroupLayout(JPanelTask);
         JPanelTask.setLayout(JPanelTaskLayout);
@@ -152,7 +150,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
                             .addComponent(JLabelDescription)
                             .addComponent(JLabelNotes))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jFormattedTextFieldDeadLine))
+                    .addComponent(jFormattedTextField1))
                 .addContainerGap())
         );
         JPanelTaskLayout.setVerticalGroup(
@@ -168,9 +166,9 @@ public class TaskDialogScreen extends javax.swing.JDialog {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(JLabelDeadLine, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jFormattedTextFieldDeadLine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
+                .addGap(10, 10, 10)
+                .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(JLabelNotes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -232,24 +230,22 @@ public class TaskDialogScreen extends javax.swing.JDialog {
             task.setNotes(JScrollPanelNote.getText());
             task.setIsCompleted(false);
 
-            //convertendo texto para data
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/y");
+            //convertendo texto para data        
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             Date deadline = null;
-            deadline = dateFormat.parse(jFormattedTextFieldDeadLine.getText());
+            deadline = dateFormat.parse(jFormattedTextField1.getText());
             task.setDeadline(deadline);
-
             controller.save(task);
-            JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso");
+            JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso!");
+            this.dispose();
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
+        } catch (ParseException ex) {
+            Logger.getLogger(TaskDialogScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
     }//GEN-LAST:event_JLabelToolBarSaveMouseClicked
-
-    private void jFormattedTextFieldDeadLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldDeadLineActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jFormattedTextFieldDeadLineActionPerformed
 
     public static void main(String args[]) {
 
@@ -280,7 +276,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     private javax.swing.JTextArea JScrollPanelDescription;
     private javax.swing.JTextArea JScrollPanelNote;
     private javax.swing.JTextField JTextFieldName;
-    private javax.swing.JFormattedTextField jFormattedTextFieldDeadLine;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables

@@ -1,18 +1,35 @@
 
 package view;
 
+import controller.ProjectController;
+import controller.TaskController;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.List;
+import javax.swing.DefaultListModel;
+import model.Project;
+import model.Task;
+import util.TaskTableModel;
 
 
 public class MainScreen extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainScreen
-     */
+    ProjectController projectController;
+    TaskController taskController;
+    
+    
+    //DefaultListModel -> vinculado com o Jlist para especificar o que vai ser mostrado nesse Jlist
+    DefaultListModel projecstModel;
+    TaskTableModel taskModel;
+    
     public MainScreen() {
         initComponents();
         decorateTableTask();
+        
+        initDataController();
+        initCOmponentsModel();
         //aqui eu chamo a construção da interface grafica pelo código como fizemos la na linha 381
     }
 
@@ -163,11 +180,6 @@ public class MainScreen extends javax.swing.JFrame {
         jList1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jList1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jList1.setForeground(new java.awt.Color(204, 204, 204));
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jList1.setFixedCellHeight(40);
         jList1.setSelectionBackground(new java.awt.Color(51, 51, 51));
@@ -234,7 +246,7 @@ public class MainScreen extends javax.swing.JFrame {
 
         JTableTask.setBackground(new java.awt.Color(51, 51, 51));
         JTableTask.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        JTableTask.setForeground(new java.awt.Color(51, 51, 51));
+        JTableTask.setForeground(new java.awt.Color(204, 204, 204));
         JTableTask.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -261,9 +273,9 @@ public class MainScreen extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        JTableTask.setGridColor(new java.awt.Color(51, 51, 51));
+        JTableTask.setGridColor(new java.awt.Color(255, 255, 255));
         JTableTask.setRowHeight(50);
-        JTableTask.setSelectionBackground(new java.awt.Color(51, 51, 51));
+        JTableTask.setSelectionBackground(new java.awt.Color(255, 255, 255));
         JTableTask.setSelectionForeground(new java.awt.Color(51, 51, 51));
         JTableTask.setShowHorizontalLines(true);
         JTableTask.setShowVerticalLines(true);
@@ -339,6 +351,16 @@ public class MainScreen extends javax.swing.JFrame {
         
         ProjectDialogScreen projectDialogScreen = new ProjectDialogScreen(this, rootPaneCheckingEnabled);
         projectDialogScreen.setVisible(true);
+        
+        
+        //adicionando um listener para atualizar a lista de projeto quando um projeto for inserido
+        //ou seja, quando clicar pra salvar e a janela for fechada a lista é atualizada com o novo projeto
+        projectDialogScreen.addWindowListener(new WindowAdapter() {
+           public void windowClosed(WindowEvent e) {
+               loadProjects();
+           }
+        });
+       
     }//GEN-LAST:event_JLabelProjectsAddMouseClicked
 
     private void JLabelTaskAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JLabelTaskAddMouseClicked
@@ -415,5 +437,38 @@ public class MainScreen extends javax.swing.JFrame {
        JTableTask.setAutoCreateRowSorter(true);
    }
 
+   public void initDataController(){
+       projectController = new ProjectController();
+       taskController = new TaskController();
+   }
+   
+   public void initCOmponentsModel(){
+       projecstModel = new DefaultListModel();
+       
+       //vamos carregar com os dados do banco de dados
+       loadProjects();
+       
+       taskModel = new TaskTableModel();
+       JTableTask.setModel(taskModel);
+       loadTasks(8);
+   }
+   
+   public void loadTasks(int idProject){
+       List<Task> tasks = taskController.getAll(idProject);
+       taskModel.setTasks(tasks);
+   }
+   
+   public void loadProjects(){
+       List<Project> projects = projectController.getAll();
+       projecstModel.clear();
+       
+       for(int i = 0; i < projects.size(); i++) {
+           Project project = projects.get(i);
+           projecstModel.addElement(project);
+       }
+       
+       jList1.setModel(projecstModel);
+               
+   }
 
 }
