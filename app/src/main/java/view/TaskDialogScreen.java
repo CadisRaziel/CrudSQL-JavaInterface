@@ -221,6 +221,12 @@ public class TaskDialogScreen extends javax.swing.JDialog {
     private void JLabelToolBarSaveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JLabelToolBarSaveMouseClicked
         // Salvar a tarefa no banco de dados
         try {
+            if(JTextFieldName.getText().equals("") || jFormattedTextField1.getText().isEmpty()) {
+            
+            JOptionPane.showMessageDialog(rootPane,
+                    "A tarefa não foi salva pois os campos nome e data precisam ser preenchidos!");
+            } else {
+            
             Task task = new Task();
 
             task.setIdProject(project.getId());// -> pegando o id do projeto pra vincular a tarefa
@@ -238,13 +244,12 @@ public class TaskDialogScreen extends javax.swing.JDialog {
             controller.save(task);
             JOptionPane.showMessageDialog(rootPane, "Tarefa salva com sucesso!");
             this.dispose();
-
+            }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(rootPane, ex.getMessage());
         } catch (ParseException ex) {
             Logger.getLogger(TaskDialogScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.dispose();
+        }     
     }//GEN-LAST:event_JLabelToolBarSaveMouseClicked
 
     public static void main(String args[]) {

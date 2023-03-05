@@ -10,6 +10,8 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import model.Project;
 import model.Task;
+import util.ButtonColumnCellRenderer;
+import util.DeadlineColumnCellRender;
 import util.TaskTableModel;
 
 public class MainScreen extends javax.swing.JFrame {
@@ -23,10 +25,12 @@ public class MainScreen extends javax.swing.JFrame {
 
     public MainScreen() {
         initComponents();
-        decorateTableTask();
 
         initDataController();
         initComponentsModel();
+        
+        //depois que carrega os dados
+        decorateTableTask();
         //aqui eu chamo a construção da interface grafica pelo código como fizemos la na linha 381
     }
 
@@ -455,7 +459,18 @@ public class MainScreen extends javax.swing.JFrame {
         JTableTask.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 14));
         JTableTask.getTableHeader().setBackground(new Color(51, 51, 51));
         JTableTask.getTableHeader().setForeground(new Color(242, 242, 242));
+        
+        JTableTask.getColumnModel().getColumn(2)
+                .setCellRenderer(new DeadlineColumnCellRender());
 
+        
+        JTableTask.getColumnModel().getColumn(4)
+                .setCellRenderer(new ButtonColumnCellRenderer("edit"));
+        
+        JTableTask.getColumnModel().getColumn(5)
+                .setCellRenderer(new ButtonColumnCellRenderer("delete"));
+        
+        
         //quando clicar na coluna ele vai ordernar por ordem alfabetica
         JTableTask.setAutoCreateRowSorter(true);
     }
