@@ -223,7 +223,7 @@ public class TaskDialogScreen extends javax.swing.JDialog {
         try {
             Task task = new Task();
 
-            task.setIdProject(8);// -> pegando o id do projeto pra vincular a tarefa
+            task.setIdProject(project.getId());// -> pegando o id do projeto pra vincular a tarefa
 
             task.setName(JTextFieldName.getText());
             task.setDescription(JScrollPanelDescription.getText());

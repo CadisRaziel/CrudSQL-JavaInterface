@@ -26,6 +26,23 @@ public class TaskTableModel extends AbstractTableModel {
         return columns[columnIndex];
     }
     
+    @Override
+    public boolean isCellEditable(int rowIndex,int columnIndex){
+        return columnIndex == 3 ? true : false;
+    }
+    
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        if(tasks.isEmpty()) {
+            return Object.class;
+        }
+        return this.getValueAt(0, columnIndex).getClass();
+    }
+    
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex){
+        tasks.get(rowIndex).setIsCompleted((boolean) aValue);
+    }
     
     
     @Override
@@ -36,7 +53,8 @@ public class TaskTableModel extends AbstractTableModel {
             case 1:
               return tasks.get(rowIndex).getDescription();          
             case 2:
-                return tasks.get(rowIndex).getDeadline();          
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                return dateFormat.format(tasks.get(rowIndex).getDeadline());
             case 3:
                return tasks.get(rowIndex).isIsCompleted();          
             case 4:
@@ -47,6 +65,8 @@ public class TaskTableModel extends AbstractTableModel {
                 return "Dados não encontrado";
         }
     }
+    
+    
 
     public String[] getColumns() {
         return columns;
